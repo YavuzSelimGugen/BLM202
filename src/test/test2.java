@@ -21,5 +21,7 @@ public class test2 {
             }
             System.out.println("");
         }
+        String v = "-18";
+        System.out.println(Integer.parseInt(v));
     }
 }

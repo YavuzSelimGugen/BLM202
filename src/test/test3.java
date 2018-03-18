@@ -30,7 +30,9 @@ public class test3 {
         liste2.add(new Node(11, 37));
         liste2.add(new Node(21, 19));
         liste2.add(new Node(94, 1));
-
+        
+        System.out.println(liste2.toString());
+        
         Node temp1 = liste1.head;
         for (int i = 0; i < liste1.size; i++) {
             boolean boo = true;

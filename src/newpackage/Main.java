@@ -6,8 +6,17 @@
 package newpackage;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
@@ -17,6 +26,9 @@ import javax.swing.JOptionPane;
  */
 public class Main extends javax.swing.JFrame {
 
+    //Çözüm için kullanalıcak global değişkenlerin tanımlanması
+    //Bu değişkenler sayesinde datalar ve metodlar arasında erişim kolaylığı
+    // sağlanılıyor.
     LinkedList<String> liste1 = new LinkedList<>();
     LinkedList<String> liste2 = new LinkedList<>();
     String denklem1;
@@ -43,6 +55,10 @@ public class Main extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jRadioButton1 = new javax.swing.JRadioButton();
         jRadioButton2 = new javax.swing.JRadioButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextArea2 = new javax.swing.JTextArea();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -58,6 +74,11 @@ public class Main extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTextArea1);
 
         jButton2.setText("Hesapla");
+        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseReleased(java.awt.event.MouseEvent evt) {
+                jButton2MouseReleased(evt);
+            }
+        });
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -70,60 +91,167 @@ public class Main extends javax.swing.JFrame {
         buttonGroup1.add(jRadioButton2);
         jRadioButton2.setText("-");
 
+        jTextArea2.setColumns(20);
+        jTextArea2.setRows(5);
+        jScrollPane2.setViewportView(jTextArea2);
+
+        jLabel1.setText("Sonuç:");
+
+        jLabel2.setText("Okunan Denklemler:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(19, 19, 19)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton2)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jRadioButton1)
+                                .addGap(9, 9, 9)
+                                .addComponent(jRadioButton2)))
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jScrollPane2)
+                                .addContainerGap())))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(42, 42, 42)
-                        .addComponent(jRadioButton1)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jRadioButton2)))
-                .addContainerGap())
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel2)
+                                .addGap(157, 284, Short.MAX_VALUE))
+                            .addComponent(jScrollPane1))
+                        .addGap(10, 10, 10))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(21, 21, 21)
+                .addContainerGap()
+                .addComponent(jLabel2)
+                .addGap(7, 7, 7)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1))
-                .addGap(47, 47, 47)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton2)
-                    .addComponent(jRadioButton1)
-                    .addComponent(jRadioButton2))
-                .addContainerGap(101, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton2)
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jRadioButton1)
+                            .addComponent(jRadioButton2)))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(44, 44, 44))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public void ayır() {
-        
+    //METOD TANIMLARI
+    //addToList metodu textArea dan belirli formatta okunan değerleri
+    //kullanarak bir list yapısı olışturur.
+    public void addToList(String denklem, LinkedList<String> liste) {
+        String[] parts = denklem.split("(?=\\+|\\-)");
+        String[] split;
+        for (String part : parts) {
+            split = part.split("x\\^");
+            Node newNode;
+            if (split.length == 2) {
+                newNode = new Node(split[0], split[1]);
+            } else {
+                newNode = new Node(split[0], 0);
+            }
+            liste.add(newNode);
+        }
+        liste.print();
     }
+
+    //polSubs metodu addToList metodunun oluşturduğu listelerdeki polinomları toplar.
+    //Bu bir polinom toplamasıdır bilinmeyenlere değer atnmaz.
+    public void polSubs(LinkedList<String> listeA, LinkedList<String> listeB) {
+        Node temp1 = listeA.head;
+        for (int i = 0; i < listeA.size; i++) {
+            boolean boo = true;
+            Node temp2 = listeB.head;
+            for (int j = 0; j < listeB.size; j++) {
+                if (temp2.üs.equals(temp1.üs)) {
+                    int ntaban = (Integer.parseInt(temp2.taban.toString()) + (Integer.parseInt(temp1.taban.toString())));
+                    int nüs = Integer.parseInt(temp2.üs.toString());
+                    Node newNode = new Node(
+                            ntaban,
+                            nüs);
+                    listeB.changeData(temp2, newNode);
+                    boo = false;
+                    break;
+                }
+                temp2 = temp2.nextNode;
+            }
+            if (boo) {
+                listeB.add(new Node(temp1.taban, temp1.üs));
+            }
+            temp1 = temp1.nextNode;
+        }
+    }
+
+    //multiplyX metodu polSubs metodu ile toplanan sonuc polinomuna x değişken
+    //değerini atar. Nihai sonuç burada belli olur.
+    public BigDecimal multiplyX(LinkedList<String> listeA) {
+
+        BigDecimal sonuc = new BigDecimal(0);
+        Node temp1 = listeA.head;
+        for (int i = 0; i < listeA.size; i++) {
+            int t = Integer.parseInt(temp1.taban.toString());
+            int u = Integer.parseInt(temp1.üs.toString());
+            BigDecimal tmp;
+            tmp = BigDecimal.valueOf(Math.pow(x, u));
+            tmp = tmp.multiply(BigDecimal.valueOf(t));
+            sonuc = sonuc.add((tmp));
+            temp1 = temp1.nextNode;
+        }
+        return sonuc;
+    }
+
+    //Verilen listeyi bir txt dosyasına yazmaya yarar.
+    public void writeTxt(LinkedList<String> listeA, String dosyaAdı) throws IOException {
+        Writer writer = null;
+        try {
+             writer = new BufferedWriter(new OutputStreamWriter(
+                    new FileOutputStream(dosyaAdı + ".txt"), "utf-8"));
+            writer.write(listeA.print());
+        } catch (IOException ex) {
+            // Report
+        } finally {
+            try {
+                writer.close();
+            } catch (Exception ex) {/*ignore*/
+            }
+        }
+    }
+
+
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         JFileChooser jFileChooser = new JFileChooser("C:\\Users\\Yavuz\\Documents\\NetBeansProjects\\Odev");
-        BufferedReader gelen = null;
+        BufferedReader br = null;
         File dosya;
 
         int a = jFileChooser.showOpenDialog(this);
         try {
             dosya = jFileChooser.getSelectedFile();
             if (dosya != null) {
-                gelen = new BufferedReader(new FileReader(dosya));
+                br = new BufferedReader(new FileReader(dosya));
                 String cumle;
-                while ((cumle = gelen.readLine()) != null) {
+                while ((cumle = br.readLine()) != null) {
                     System.out.println(cumle);
                     jTextArea1.append(cumle + "\n");
                 }
@@ -133,7 +261,11 @@ public class Main extends javax.swing.JFrame {
         } catch (Exception e) {
 
         } finally {
-
+            try {
+                br.close();
+            } catch (IOException ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -141,74 +273,65 @@ public class Main extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         if (jRadioButton1.isSelected()) {
+            //Global değişkenlerin atanması
             String[] lines = jTextArea1.getText().split("\\n");
             denklem1 = lines[0];
             denklem2 = lines[1];
             x = Integer.parseInt(lines[2]);
-            //1. denklem list yapısına ekleme işlemi.
-            String[] parts = denklem1.split("(?=\\+|\\-)");
-            String[] split;
-            for (String part : parts) {
-                split = part.split("x\\^");
-                Node newNode;
-                if (split.length == 2) {
-                    newNode = new Node(split[0], split[1]);
-                } else {
-                    newNode = new Node(split[0], 1);
-                }
-                liste1.add(newNode);
+            //1. denklem list yapısına ekleme ve dosyaya yazma işlemi.
+            addToList(denklem1, liste1);
+            try {
+                writeTxt(liste1,"list1");
+            } catch (IOException ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             }
-            liste1.print();
-
-            //2. denklem list yapısına ekleme işlemi.
-            String[] parts2 = denklem2.split("(?=\\+|\\-)");
-            String[] split2;
-            for (String part : parts2) {
-                split2 = part.split("x\\^");
-                Node newNode;
-                if (split2.length == 2) {
-                    newNode = new Node(split2[0], split2[1]);
-                } else {
-                    newNode = new Node(split2[0], 1);
-                }
-                liste2.add(newNode);
+            //2. denklem list yapısına ekleme ve dosyaya yazma işlemi.
+            addToList(denklem2, liste2);
+            try {
+                writeTxt(liste2,"list2");
+            } catch (IOException ex) {
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             }
-            liste2.print();
-            
             //Polinom toplama işlemi
-            Node temp1 = liste1.head;
-            for (int i = 0; i < liste1.size; i++) {
-            boolean boo = true;
-            Node temp2 = liste2.head;
-            for (int j = 0; j < liste2.size; j++) {
-                if (temp2.üs.equals(temp1.üs)) {
-                    int ntaban = (Integer.parseInt(temp2.taban.toString()) + (Integer.parseInt(temp1.taban.toString())));
-                    int nüs = Integer.parseInt(temp2.üs.toString()) ;
-                    Node newNode = new Node(
-                           ntaban ,
-                            nüs);
-                    liste2.changeData(temp2,newNode);
-                    boo = false;
-                    break;
-                }
-                temp2 = temp2.nextNode;
-            }
-            if (boo) {
-                liste2.add(new Node(temp1.taban, temp1.üs));
-            }
-            temp1 = temp1.nextNode;
-        }
-            
-            
+            polSubs(liste1, liste2);
+            //X ile işlem sonucu
+            BigDecimal sonuc = multiplyX(liste2);
+
+            //Sonuc textine yazdırma işlemi:
+            jTextArea2.setText(liste2.print() + "\n");
+            jTextArea2.append("x ->" + x + "\n");
+            jTextArea2.append("=__________\n");
+            jTextArea2.append(sonuc.toString());
+
         } else if (jRadioButton2.isSelected()) {
+            //Global değişkenlerin atanması
             String[] lines = jTextArea1.getText().split("\\n");
             denklem1 = lines[0];
             denklem2 = lines[1];
             x = -(Integer.parseInt(lines[2]));
+            //1. denklem list yapısına ekleme işlemi.
+            addToList(denklem1, liste1);
+            //2. denklem list yapısına ekleme işlemi.
+            addToList(denklem2, liste2);
+            //Polinom toplama işlemi
+            polSubs(liste1, liste2);
+            //X ile işlem sonucu
+            BigDecimal sonuc = multiplyX(liste2);
+
+            //Sonuc textine yazdırma işlemi:
+            jTextArea2.setText(liste2.print() + "\n");
+            jTextArea2.append("x ->" + x + "\n");
+            jTextArea2.append("=__________\n");
+            jTextArea2.append(sonuc.toString());
         } else {
             JOptionPane.showMessageDialog(this, "Lütfen +/- seçiniz.");
         }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton2MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseReleased
+        // TODO add your handling code here:
+        jButton2.setEnabled(false);
+    }//GEN-LAST:event_jButton2MouseReleased
 
     /**
      * @param args the command line arguments
@@ -249,9 +372,13 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea jTextArea2;
     // End of variables declaration//GEN-END:variables
 }

@@ -16,6 +16,8 @@ public class LinkedList <Type> {
     public LinkedList() {
         head = null;
     }
+    //changeData metodu verilen nodu aranan node ile değiştirir. Bu işlem sadece data 
+    //kısımları için gerçerlidir. Arnan node objesi değişmez sadece dataları değişir. 
     public void changeData (Node<Type> arnan, Node<Type> b) {
         Node<Type> wantedData = head;
         while (wantedData != null) {
@@ -31,6 +33,7 @@ public class LinkedList <Type> {
             wantedData.üs = b.üs;
         }
     }
+    // Aşağıdaki metodlar klasik Singly Linked List metodlarıdır.
     public void add(Node <Type> newNode) {
         if(head == null) {
             addFirst(newNode);
@@ -39,6 +42,7 @@ public class LinkedList <Type> {
         }
         size++;
     }
+    
     public void addFirst(Type data, Type data2) {
         addFirst(new Node(data,data2));
     }
@@ -60,26 +64,6 @@ public class LinkedList <Type> {
         }
     }
 
-    /*
-    public boolean insetAfter(Type iData, Type newData) {
-        Node<Type> wantedData = head;
-        while (wantedData != null) {
-            if (wantedData.taban == iData) {
-                break;
-            }
-            wantedData = wantedData.nextNode;
-        }
-        if (wantedData == null) {
-            System.out.println("Aranan data bulunamadı");
-            return false;
-        } else {
-            Node<Type> newNode = new Node(newData);
-            newNode.nextNode = wantedData.nextNode;
-            wantedData.nextNode = newNode;
-            return true;
-        }
-    }*/
-
     public boolean remove(Type iData, Type sData) {
         Node<Type> temp = head;
         Node<Type> prev = null;
@@ -99,13 +83,15 @@ public class LinkedList <Type> {
         }
         return false;
     }
-
-    public void print() {
+    
+    public String print() {
+        String result = "";
         Node<Type> temp = head;
         while (temp != null) {
-            System.out.print("("+temp.taban + "^"+ temp.üs + ") ->");
+            result +=("("+temp.taban + "*x^"+ temp.üs + ") ->");
             temp = temp.nextNode;
         }
-        System.out.println(" null");
+        result+=(" null");
+        return result;
     }
 }
