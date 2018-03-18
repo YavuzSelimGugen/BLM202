@@ -5,15 +5,25 @@
  */
 package newpackage;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Yavuz
  */
 public class Main extends javax.swing.JFrame {
 
-    /**
-     * Creates new form Main
-     */
+    LinkedList<String> liste1 = new LinkedList<>();
+    LinkedList<String> liste2 = new LinkedList<>();
+    LinkedList<String> result = new LinkedList<>();
+    String denklem1;
+    String denklem2;
+    int x;
+
     public Main() {
         initComponents();
     }
@@ -27,21 +37,169 @@ public class Main extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
+        jButton1 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jButton2 = new javax.swing.JButton();
+        jRadioButton1 = new javax.swing.JRadioButton();
+        jRadioButton2 = new javax.swing.JRadioButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jButton1.setText("Oku");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jTextArea1.setColumns(20);
+        jTextArea1.setRows(5);
+        jScrollPane1.setViewportView(jTextArea1);
+
+        jButton2.setText("Hesapla");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        buttonGroup1.add(jRadioButton1);
+        jRadioButton1.setText("+");
+
+        buttonGroup1.add(jRadioButton2);
+        jRadioButton2.setText("-");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(42, 42, 42)
+                        .addComponent(jRadioButton1)
+                        .addGap(18, 18, 18)
+                        .addComponent(jRadioButton2)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1))
+                .addGap(47, 47, 47)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton2)
+                    .addComponent(jRadioButton1)
+                    .addComponent(jRadioButton2))
+                .addContainerGap(101, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        JFileChooser jFileChooser = new JFileChooser("C:\\Users\\Yavuz\\Documents\\NetBeansProjects\\Odev");
+        BufferedReader gelen = null;
+        File dosya;
+
+        int a = jFileChooser.showOpenDialog(this);
+        try {
+            dosya = jFileChooser.getSelectedFile();
+            if (dosya != null) {
+                gelen = new BufferedReader(new FileReader(dosya));
+                String cumle;
+                while ((cumle = gelen.readLine()) != null) {
+                    System.out.println(cumle);
+                    jTextArea1.append(cumle + "\n");
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Hata 01");
+            }
+        } catch (Exception e) {
+
+        } finally {
+
+        }
+
+    }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        if (jRadioButton1.isSelected()) {
+            String[] lines = jTextArea1.getText().split("\\n");
+            denklem1 = lines[0];
+            denklem2 = lines[1];
+            x = Integer.parseInt(lines[2]);
+            //1. denklem list yapısına ekleme işlemi.
+            String[] parts = denklem1.split("(?=\\+|\\-)");
+            String[] split;
+            for (String part : parts) {
+                split = part.split("x\\^");
+                Node newNode;
+                if (split.length == 2) {
+                    newNode = new Node(split[0], split[1]);
+                } else {
+                    newNode = new Node(split[0], 1);
+                }
+                liste1.add(newNode);
+            }
+            liste1.print();
+
+            //2. denklem list yapısına ekleme işlemi.
+            String[] parts2 = denklem2.split("(?=\\+|\\-)");
+            String[] split2;
+            for (String part : parts2) {
+                split2 = part.split("x\\^");
+                Node newNode;
+                if (split2.length == 2) {
+                    newNode = new Node(split2[0], split2[1]);
+                } else {
+                    newNode = new Node(split2[0], 1);
+                }
+                liste2.add(newNode);
+            }
+            liste2.print();
+            
+            Node temp1 = liste1.head;
+            
+            while(temp1.nextNode != null) {
+                Node temp2 = liste2.head;
+                while(temp2.nextNode != null) {
+                    if(temp2.taban.equals(temp1.taban)) {
+                        Node newNode = new Node(
+                                (int)(temp2.taban),
+                                (int)(temp1.üs)+(int)(temp2.üs));
+                        result.add(newNode);
+                        break;
+                    }
+                    temp2 = temp2.nextNode;
+                }
+                temp1 = temp1.nextNode;
+            }
+            
+            
+        } else if (jRadioButton2.isSelected()) {
+            String[] lines = jTextArea1.getText().split("\\n");
+            denklem1 = lines[0];
+            denklem2 = lines[1];
+            x = -(Integer.parseInt(lines[2]));
+        } else {
+            JOptionPane.showMessageDialog(this, "Lütfen +/- seçiniz.");
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -79,5 +237,12 @@ public class Main extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JRadioButton jRadioButton1;
+    private javax.swing.JRadioButton jRadioButton2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTextArea jTextArea1;
     // End of variables declaration//GEN-END:variables
 }
