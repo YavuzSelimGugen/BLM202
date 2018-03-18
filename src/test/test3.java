@@ -17,7 +17,6 @@ public class test3 {
     public static void main(String[] args) {
         LinkedList<String> liste1 = new LinkedList<>();
         LinkedList<String> liste2 = new LinkedList<>();
-        LinkedList<String> result = new LinkedList<>();
 
         liste1.add(new Node(18, 75));
         liste1.add(new Node(4, 56));
@@ -41,20 +40,19 @@ public class test3 {
                     Node newNode = new Node(
                             (int) (temp2.taban) + (int) (temp1.taban),
                             (int) (temp2.üs));
-                    result.add(newNode);
+                    liste2.changeData(temp2,newNode);
                     boo = false;
                     break;
                 }
                 temp2 = temp2.nextNode;
             }
             if (boo) {
-                result.add(new Node(temp1.taban, temp1.üs));
+                liste2.add(new Node(temp1.taban, temp1.üs));
             }
             temp1 = temp1.nextNode;
         }
         liste1.print();
         System.out.println(liste1.size);
         liste2.print();
-        result.print();
     }
 }

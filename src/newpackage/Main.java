@@ -19,7 +19,6 @@ public class Main extends javax.swing.JFrame {
 
     LinkedList<String> liste1 = new LinkedList<>();
     LinkedList<String> liste2 = new LinkedList<>();
-    LinkedList<String> result = new LinkedList<>();
     String denklem1;
     String denklem2;
     int x;
@@ -109,6 +108,9 @@ public class Main extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    public void ayır() {
+        
+    }
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         JFileChooser jFileChooser = new JFileChooser("C:\\Users\\Yavuz\\Documents\\NetBeansProjects\\Odev");
@@ -173,22 +175,29 @@ public class Main extends javax.swing.JFrame {
             }
             liste2.print();
             
+            //Polinom toplama işlemi
             Node temp1 = liste1.head;
-            
-            while(temp1.nextNode != null) {
-                Node temp2 = liste2.head;
-                while(temp2.nextNode != null) {
-                    if(temp2.taban.equals(temp1.taban)) {
-                        Node newNode = new Node(
-                                (int)(temp2.taban),
-                                (int)(temp1.üs)+(int)(temp2.üs));
-                        result.add(newNode);
-                        break;
-                    }
-                    temp2 = temp2.nextNode;
+            for (int i = 0; i < liste1.size; i++) {
+            boolean boo = true;
+            Node temp2 = liste2.head;
+            for (int j = 0; j < liste2.size; j++) {
+                if (temp2.üs.equals(temp1.üs)) {
+                    int ntaban = (Integer.parseInt(temp2.taban.toString()) + (Integer.parseInt(temp1.taban.toString())));
+                    int nüs = Integer.parseInt(temp2.üs.toString()) ;
+                    Node newNode = new Node(
+                           ntaban ,
+                            nüs);
+                    liste2.changeData(temp2,newNode);
+                    boo = false;
+                    break;
                 }
-                temp1 = temp1.nextNode;
+                temp2 = temp2.nextNode;
             }
+            if (boo) {
+                liste2.add(new Node(temp1.taban, temp1.üs));
+            }
+            temp1 = temp1.nextNode;
+        }
             
             
         } else if (jRadioButton2.isSelected()) {

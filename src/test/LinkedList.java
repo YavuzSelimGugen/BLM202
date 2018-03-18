@@ -26,6 +26,23 @@ public class LinkedList <T> {
         }
         size++;
     }
+    
+    public void changeData (Node<T> arnan, Node<T> b) {
+        Node<T> wantedData = head;
+        while (wantedData != null) {
+            if (wantedData.taban == arnan.taban && wantedData.üs == arnan.üs) {
+                break;
+            }
+            wantedData = wantedData.nextNode;
+        }
+        if (wantedData == null) {
+            System.out.println("Aranan data bulunamadı");
+        } else {
+            wantedData.taban = b.taban;
+            wantedData.üs = b.üs;
+        }
+    }
+    
     public void addFirst(T data, T data2) {
         addFirst(new Node(data,data2));
     }
@@ -90,7 +107,7 @@ public class LinkedList <T> {
     public void print() {
         Node<T> temp = head;
         while (temp != null) {
-            System.out.print(temp.taban + "^"+ temp.üs + " ->");
+            System.out.print("("+temp.taban + "^"+ temp.üs + ") ->");
             temp = temp.nextNode;
         }
         System.out.println(" null");

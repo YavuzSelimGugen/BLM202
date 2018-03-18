@@ -16,7 +16,21 @@ public class LinkedList <Type> {
     public LinkedList() {
         head = null;
     }
-
+    public void changeData (Node<Type> arnan, Node<Type> b) {
+        Node<Type> wantedData = head;
+        while (wantedData != null) {
+            if (wantedData.taban == arnan.taban && wantedData.üs == arnan.üs) {
+                break;
+            }
+            wantedData = wantedData.nextNode;
+        }
+        if (wantedData == null) {
+            System.out.println("Aranan data bulunamadı");
+        } else {
+            wantedData.taban = b.taban;
+            wantedData.üs = b.üs;
+        }
+    }
     public void add(Node <Type> newNode) {
         if(head == null) {
             addFirst(newNode);
@@ -89,7 +103,7 @@ public class LinkedList <Type> {
     public void print() {
         Node<Type> temp = head;
         while (temp != null) {
-            System.out.print(temp.taban + "^"+ temp.üs + " ->");
+            System.out.print("("+temp.taban + "^"+ temp.üs + ") ->");
             temp = temp.nextNode;
         }
         System.out.println(" null");
