@@ -1,8 +1,10 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+ * @file Node
+ * @description Node yapısınınu oluşturan dosya.
+ * @ 1. ödev
+ * @date 6.03.2018
+ * @author Yavuz Selim Gügen / yavuzselim.gugen@stu.fsm.edu.tr
+*/
 package newpackage;
 
 /**

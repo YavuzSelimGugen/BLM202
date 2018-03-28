@@ -1,8 +1,10 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+ * @file Main
+ * @description Swing menüsü ve diğer algoritmik işlemlerin yapıldığı dosya.
+ * @ 1. ödev
+ * @date 6.03.2018
+ * @author Yavuz Selim Gügen / yavuzselim.gugen@stu.fsm.edu.tr
+*/
 package newpackage;
 
 import java.io.BufferedReader;
@@ -177,7 +179,7 @@ public class Main extends javax.swing.JFrame {
     }
 
     //polSubs metodu addToList metodunun oluşturduğu listelerdeki polinomları toplar.
-    //Bu bir polinom toplamasıdır bilinmeyenlere değer atnmaz.
+    //Bu bir polinom toplamasıdır,  bilinmeyenlere değer atnmaz.
     public void polSubs(LinkedList<String> listeA, LinkedList<String> listeB) {
         Node temp1 = listeA.head;
         for (int i = 0; i < listeA.size; i++) {
@@ -202,7 +204,31 @@ public class Main extends javax.swing.JFrame {
             temp1 = temp1.nextNode;
         }
     }
-
+    //Bu bir polinom çıkarnasıdır, bilinmeyenlere değer atnmaz.
+    public void polXubs(LinkedList<String> listeA, LinkedList<String> listeB) {
+        Node temp1 = listeA.head;
+        for (int i = 0; i < listeA.size; i++) {
+            boolean boo = true;
+            Node temp2 = listeB.head;
+            for (int j = 0; j < listeB.size; j++) {
+                if (temp2.üs.equals(temp1.üs)) {
+                    int ntaban = (-1*(Integer.parseInt(temp2.taban.toString())) + (Integer.parseInt(temp1.taban.toString())));
+                    int nüs = Integer.parseInt(temp2.üs.toString());
+                    Node newNode = new Node(
+                            ntaban,
+                            nüs);
+                    listeB.changeData(temp2, newNode);
+                    boo = false;
+                    break;
+                }
+                temp2 = temp2.nextNode;
+            }
+            if (boo) {
+                listeB.add(new Node(temp1.taban, temp1.üs));
+            }
+            temp1 = temp1.nextNode;
+        }
+    }
     //multiplyX metodu polSubs metodu ile toplanan sonuc polinomuna x değişken
     //değerini atar. Nihai sonuç burada belli olur.
     public BigDecimal multiplyX(LinkedList<String> listeA) {
@@ -273,6 +299,7 @@ public class Main extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
         if (jRadioButton1.isSelected()) {
+            jTextArea2.setText("");
             //Global değişkenlerin atanması
             String[] lines = jTextArea1.getText().split("\\n");
             denklem1 = lines[0];
@@ -302,19 +329,22 @@ public class Main extends javax.swing.JFrame {
             jTextArea2.append("x ->" + x + "\n");
             jTextArea2.append("=__________\n");
             jTextArea2.append(sonuc.toString());
+            liste1.clear();
+            liste2.clear();
 
         } else if (jRadioButton2.isSelected()) {
+            jTextArea2.setText("");
             //Global değişkenlerin atanması
             String[] lines = jTextArea1.getText().split("\\n");
             denklem1 = lines[0];
             denklem2 = lines[1];
-            x = -(Integer.parseInt(lines[2]));
+            x = (Integer.parseInt(lines[2]));
             //1. denklem list yapısına ekleme işlemi.
             addToList(denklem1, liste1);
             //2. denklem list yapısına ekleme işlemi.
             addToList(denklem2, liste2);
-            //Polinom toplama işlemi
-            polSubs(liste1, liste2);
+            //Polinom çıkarma işlemi
+            polXubs(liste1, liste2);
             //X ile işlem sonucu
             BigDecimal sonuc = multiplyX(liste2);
 
@@ -323,6 +353,8 @@ public class Main extends javax.swing.JFrame {
             jTextArea2.append("x ->" + x + "\n");
             jTextArea2.append("=__________\n");
             jTextArea2.append(sonuc.toString());
+            liste1.clear();
+            liste2.clear();
         } else {
             JOptionPane.showMessageDialog(this, "Lütfen +/- seçiniz.");
         }
@@ -330,7 +362,7 @@ public class Main extends javax.swing.JFrame {
 
     private void jButton2MouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseReleased
         // TODO add your handling code here:
-        jButton2.setEnabled(false);
+        
     }//GEN-LAST:event_jButton2MouseReleased
 
     /**

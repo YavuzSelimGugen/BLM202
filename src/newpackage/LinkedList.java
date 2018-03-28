@@ -1,20 +1,22 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+ * @file LİnkedList
+ * @description Liste yapısınınu oluşturan dosya.
+ * @ 1. ödev
+ * @date 6.03.2018
+ * @author Yavuz Selim Gügen / yavuzselim.gugen@stu.fsm.edu.tr
+*/
 package newpackage;
 
-/**
- *
- * @author Yavuz
- */
 public class LinkedList <Type> {
     Node<Type> head;
     int size;
 
     public LinkedList() {
         head = null;
+    }
+    public void clear () {
+        head = null;
+        size = 0;
     }
     //changeData metodu verilen nodu aranan node ile değiştirir. Bu işlem sadece data 
     //kısımları için gerçerlidir. Arnan node objesi değişmez sadece dataları değişir. 
